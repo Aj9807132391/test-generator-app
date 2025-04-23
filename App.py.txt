@@ -1,0 +1,8 @@
+App.py
+import streamlit as stfrom transformers import pipeline
+# Cargamos el modelo de preguntas y respuestasqa_pipeline = pipeline("question-answering")
+st.title("Generador de tests desde temarios usando Transformers")
+# Subida del archivo con el temariouploaded_file = st.file_uploader("Sube un archivo de texto con el temario", type=["txt"])
+if uploaded_file:    context = uploaded_file.read().decode("utf-8")    st.text_area("Temario cargado:", context, height=200)
+    question = st.text_input("Escribe una pregunta sobre el temario")    if question:        result = qa_pipeline(question=question, context=context)        st.markdown(f"**Respuesta sugerida:** {result['answer']}")
+        respuesta_usuario = st.radio("¿Tu respuesta fue correcta?", ("Sí", "No"))        if respuesta_usuario:            if respuesta_usuario == "Sí":                st.success("¡Perfecto! Has acertado.")            else:                st.error(f"La respuesta correcta era: **{result['answer']}**")
